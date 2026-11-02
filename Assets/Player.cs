@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         
         LungeRate = 2;
         Duration = 0.4f;
-        Cooldown = 1f;
+        Cooldown = 0.6f;
         OnPlatform = false;
     }
 
@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
 
     public void KeyboardControl()
     {
-        // CurrentState = States.Idle; might be a little redundant 
+        CurrentState = States.Idle;
         
         LungeTimer -= Time.deltaTime; // timer for lunge
         CooldownTimer -= Time.deltaTime; // timer for cooldowns
