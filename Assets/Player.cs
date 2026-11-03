@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     public float CooldownTimer;
     public float LungeTimer;
 
+    public AudioSource jump;
+    public AudioSource dash;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -78,6 +81,7 @@ public class Player : MonoBehaviour
         if (Keyboard.current.cKey.wasPressedThisFrame && OnGround()) // if space pressed + if im not midair
         {
             vel.y = JumpVel; // jump
+            jump.Play();
             CurrentState = States.Jump;
             // OnPlatform = false; // prevents doublejumping while midair
         }
@@ -97,6 +101,7 @@ public class Player : MonoBehaviour
 
         if (LungeTimer > 0)
         {
+            dash.Play();
             // dash to the direction of where im facing
             if (Keyboard.current.rightArrowKey.isPressed)
             {
@@ -106,6 +111,7 @@ public class Player : MonoBehaviour
             {
                 vel.x = -Speed * LungeRate;
             }
+
             CurrentState = States.Lunge;
         }
 
@@ -151,7 +157,7 @@ public class Player : MonoBehaviour
 
         if (CollidedObject.CompareTag("Hazard"))
         {
-            Destroy(gameObject);
+            transform.position = new Vector2(-7.03f, -2.95f);
         }
     }
 

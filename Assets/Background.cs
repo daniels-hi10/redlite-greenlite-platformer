@@ -14,11 +14,10 @@ public class Background : MonoBehaviour
     public float RedTimer;
     public float BlackTimer;
 
+    public SpriteRenderer sr;
     public Player player;
 
-    // public float GreenLength;
-    // public float RedLength;
-    // public float BlackLength;
+    public AudioSource buzzer;
     
     public Lights Colors = Lights.Green;
     
@@ -26,6 +25,7 @@ public class Background : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
+        sr = GetComponent<SpriteRenderer>();
         
         GreenTimer = 10f;
         RedTimer = 5f;
@@ -36,15 +36,6 @@ public class Background : MonoBehaviour
     void Update()
     {
         LightSwitch();
-
-        if (Colors == Lights.Green)
-            GreenTimer -= Time.deltaTime;
-        
-        if (Colors == Lights.Red)
-            RedTimer -= Time.deltaTime;
-
-        if (Colors == Lights.Black)
-            BlackTimer -= Time.deltaTime;
     }
 
     public void LightSwitch()
@@ -53,6 +44,9 @@ public class Background : MonoBehaviour
         {
             case Lights.Green:
             {
+                sr.color = new Color(0.41f, 0.67f, 0.4f, 1f);
+                GreenTimer -= Time.deltaTime;
+                
                 if (GreenTimer <= 0)
                 {
                     Colors = Lights.Red;
@@ -65,8 +59,12 @@ public class Background : MonoBehaviour
 
             case Lights.Red:
             {
+                sr.color = new Color(0.67f, 0.4f, 0.4f, 1f);
+                RedTimer -= Time.deltaTime;
+                
                 if (player.CurrentState != States.Idle)
                 {
+                    buzzer.Play();
                     Colors = Lights.Black;
                     RedTimer = 5f;
                 }
@@ -85,9 +83,13 @@ public class Background : MonoBehaviour
 
             case Lights.Black:
             {
+                sr.color = Color.black;
+                BlackTimer -= Time.deltaTime;
+                
                 if (BlackTimer <= 0)
                 {
                     Colors = Lights.Green;
+                    player.transform.position = new Vector2(-7.03f, -2.95f);
                     BlackTimer = 3f;
                 }
                 
