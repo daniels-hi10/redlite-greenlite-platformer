@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public enum Lights
 {
@@ -10,6 +11,10 @@ public enum Lights
 }
 public class Background : MonoBehaviour
 {
+    public TextMeshPro scoreText;
+    public TextMeshPro timerText;
+    public TextMeshPro lifeText;
+    
     public float GreenTimer;
     public float RedTimer;
     public float BlackTimer;
@@ -27,9 +32,10 @@ public class Background : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         sr = GetComponent<SpriteRenderer>();
         
-        GreenTimer = 10f;
-        RedTimer = 5f;
-        BlackTimer = 3f;
+        
+        GreenTimer = 3f;
+        RedTimer = 2f;
+        BlackTimer = 1f;
     }
 
     // Update is called once per frame
@@ -50,10 +56,8 @@ public class Background : MonoBehaviour
                 if (GreenTimer <= 0)
                 {
                     Colors = Lights.Red;
-                    GreenTimer = 10f;
+                    GreenTimer = 3f;
                 }
-                
-                Debug.Log(Colors);
             }
                 break;
 
@@ -66,18 +70,23 @@ public class Background : MonoBehaviour
                 {
                     buzzer.Play();
                     Colors = Lights.Black;
-                    RedTimer = 5f;
+                    RedTimer = 2f;
+
+                    Debug.Log("Score: " + player.Score);
+                    ChangeScore(-1);
+                    // ScoreTracker();
                 }
                 
                 if (RedTimer <= 0)
                 {
-                    {
-                        Colors = Lights.Green;
-                        RedTimer = 5f;
-                    }
+                    Colors = Lights.Green;
+                    RedTimer = 2f;
+                    
+                    ChangeScore(1);
+                    // ScoreTracker();
                 }
                 
-                Debug.Log(Colors);
+                //Debug.Log(Colors);
             }
                 break;
 
@@ -90,12 +99,20 @@ public class Background : MonoBehaviour
                 {
                     Colors = Lights.Green;
                     player.transform.position = new Vector2(-7.03f, -2.95f);
-                    BlackTimer = 3f;
+                    BlackTimer = 1f;
+                    player.DepleteHealth();
                 }
                 
-                Debug.Log(Colors);
+                // Debug.Log(Colors);
             }
                 break;
         }
+    }
+
+    public void ChangeScore(int amt)
+    {
+        if (player == null) return;
+        player.Score += amt;
+        Debug.Log("Score: " + player.Score);
     }
 }

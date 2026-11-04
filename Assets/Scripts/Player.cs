@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     //character stats
     public float Speed; // character speed
     public float JumpVel; // character jump velocity
+    public int Life; // character life
     public bool FacingLeft; // checks if character is facing left
     
     // lunge stats
@@ -27,9 +28,10 @@ public class Player : MonoBehaviour
     public float Duration; // lunge duration
     public float Cooldown; // lunge cooldown
 
-    // timers
+    // timers + score
     public float CooldownTimer;
     public float LungeTimer;
+    public int Score;
 
     public AudioSource jump;
     public AudioSource dash;
@@ -46,10 +48,12 @@ public class Player : MonoBehaviour
 
         Speed = 3;
         JumpVel = 4;
+        Life = 3;
         
         LungeRate = 2;
         Duration = 0.4f;
         Cooldown = 0.6f;
+        Score = 0;
         
         OnPlatform = false;
         FacingLeft = false;
@@ -132,30 +136,40 @@ public class Player : MonoBehaviour
         switch (CurrentState)
         {
             case States.Idle:
-                anim.SetBool("IsRunning", false);
-                anim.SetBool("HasJumped", false);
+                anim.SetBool("IsRunning", false); anim.SetBool("HasJumped", false);
                 // sr.color = Color.white;
                 break;
 
             case States.Walk:
-                anim.SetBool("IsRunning", true);
-                anim.SetBool("HasJumped", false);
+                anim.SetBool("IsRunning", true); anim.SetBool("HasJumped", false);
                 // sr.color = Color.green;
                 break;
 
             case States.Jump:
                 // sr.color = Color.orange;
-                anim.SetBool("HasJumped", true);
-                anim.SetBool("IsRunning", false);
+                anim.SetBool("HasJumped", true); anim.SetBool("IsRunning", false);
                 break;
             
             case States.Lunge:
-                part.Emit(5);
+                part.Emit(1);
                 // sr.color = Color.cyan;
                 break;
         }
     }
-    
+
+    public void DepleteHealth()
+    {
+        if (Life > 1)
+        {
+            Life -= 1;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+        Debug.Log("Life: " + Life);
+    }
 
     public bool OnGround()
     {
