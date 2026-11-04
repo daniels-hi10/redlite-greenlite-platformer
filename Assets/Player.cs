@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     //character stats
     public float Speed; // character speed
     public float JumpVel; // character jump velocity
+    public bool FacingLeft; // checks if character is facing left
     
     // lunge stats
     public float LungeRate; // lunge rate, speed multiplier when character runs
@@ -32,6 +33,9 @@ public class Player : MonoBehaviour
 
     public AudioSource jump;
     public AudioSource dash;
+    public Animator anim;
+    public ParticleSystem part;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,7 +50,9 @@ public class Player : MonoBehaviour
         LungeRate = 2;
         Duration = 0.4f;
         Cooldown = 0.6f;
+        
         OnPlatform = false;
+        FacingLeft = false;
     }
 
     // Update is called once per frame
@@ -69,11 +75,13 @@ public class Player : MonoBehaviour
         if (Keyboard.current.rightArrowKey.isPressed) // if right arrow key pressed
         {
             vel.x = Speed; // go right
+            FacingLeft = false;
             CurrentState = States.Walk; // change anim state
         }
         if (Keyboard.current.leftArrowKey.isPressed) // if left arrow key pressed
         {
             vel.x = -Speed; // go left
+            FacingLeft = true;
             CurrentState = States.Walk; // change anim state
         }
 
@@ -116,25 +124,34 @@ public class Player : MonoBehaviour
         }
 
         rb.linearVelocity = vel;
+        sr.flipX = FacingLeft;
     }
+    
     public void SwitchState() // change anim state
     {
         switch (CurrentState)
         {
             case States.Idle:
-                sr.color = Color.white;
+                anim.SetBool("IsRunning", false);
+                anim.SetBool("HasJumped", false);
+                // sr.color = Color.white;
                 break;
 
             case States.Walk:
-                sr.color = Color.green;
+                anim.SetBool("IsRunning", true);
+                anim.SetBool("HasJumped", false);
+                // sr.color = Color.green;
                 break;
 
             case States.Jump:
-                sr.color = Color.orange;
+                // sr.color = Color.orange;
+                anim.SetBool("HasJumped", true);
+                anim.SetBool("IsRunning", false);
                 break;
             
             case States.Lunge:
-                sr.color = Color.cyan;
+                part.Emit(5);
+                // sr.color = Color.cyan;
                 break;
         }
     }
