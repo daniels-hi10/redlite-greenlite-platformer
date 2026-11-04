@@ -168,7 +168,8 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
         
-        Debug.Log("Life: " + Life);
+
+        // Background.scoreText.text = "Score: " + Score;
     }
 
     public bool OnGround()

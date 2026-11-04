@@ -11,9 +11,9 @@ public enum Lights
 }
 public class Background : MonoBehaviour
 {
-    public TextMeshPro scoreText;
-    public TextMeshPro timerText;
-    public TextMeshPro lifeText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI lifeText;
     
     public float GreenTimer;
     public float RedTimer;
@@ -32,10 +32,12 @@ public class Background : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         sr = GetComponent<SpriteRenderer>();
         
-        
         GreenTimer = 3f;
         RedTimer = 2f;
         BlackTimer = 1f;
+        
+        scoreText.text = "Score: " + player.Score;
+        lifeText.text = "Life: " + player.Life;
     }
 
     // Update is called once per frame
@@ -71,9 +73,10 @@ public class Background : MonoBehaviour
                     buzzer.Play();
                     Colors = Lights.Black;
                     RedTimer = 2f;
-
-                    Debug.Log("Score: " + player.Score);
+                    
                     ChangeScore(-1);
+                    lifeText.text = "Life: " + player.Life;
+                    Debug.Log("Score: " + player.Score);
                     // ScoreTracker();
                 }
                 
@@ -83,7 +86,8 @@ public class Background : MonoBehaviour
                     RedTimer = 2f;
                     
                     ChangeScore(1);
-                    // ScoreTracker();
+                    lifeText.text = "Life: " + player.Life;
+                    Debug.Log("Score: " + player.Score);
                 }
                 
                 //Debug.Log(Colors);
@@ -94,6 +98,7 @@ public class Background : MonoBehaviour
             {
                 sr.color = Color.black;
                 BlackTimer -= Time.deltaTime;
+                Debug.Log("Score: " + player.Score);
                 
                 if (BlackTimer <= 0)
                 {
@@ -113,6 +118,6 @@ public class Background : MonoBehaviour
     {
         if (player == null) return;
         player.Score += amt;
-        Debug.Log("Score: " + player.Score);
+        scoreText.text = "Score: " + player.Score;
     }
 }
