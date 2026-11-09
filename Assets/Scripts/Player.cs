@@ -159,11 +159,12 @@ public class Player : MonoBehaviour
 
     public void DepleteHealth()
     {
-        if (Life > 1)
+        if (gameObject == null) return;
         {
             Life -= 1;
         }
-        else
+        
+        if (Life <= 0)
         {
             Destroy(gameObject);
         }
@@ -187,7 +188,7 @@ public class Player : MonoBehaviour
             OnPlatform = true;  // changes bool to true if im not mid-air
         }
 
-        if (CollidedObject.CompareTag("Hazard"))
+        if (CollidedObject.CompareTag("Hazard")) // respawns if i hit a spike
         {
             transform.position = new Vector2(-7.03f, -2.95f);
         }

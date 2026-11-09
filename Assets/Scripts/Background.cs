@@ -55,7 +55,6 @@ public class Background : MonoBehaviour
                 sr.color = new Color(0.41f, 0.67f, 0.4f, 1f);
                 GreenTimer -= Time.deltaTime;
                 lifeText.text = "Life: " + player.Life;
-                scoreText.text = "Score: " + player.Score;
                 timerText.text = "" + (int)GreenTimer;
                 
                 if (GreenTimer <= 1)
@@ -93,7 +92,7 @@ public class Background : MonoBehaviour
                     ChangeScore(1);
                     lifeText.text = "Life: " + player.Life;
                     Debug.Log(player.Score);
-                    scoreText.text = "Score: " + player.Score;
+                    //scoreText.text = "Score: " + player.Score;
                 }
                 
                 //Debug.Log(Colors);
@@ -104,7 +103,7 @@ public class Background : MonoBehaviour
             {
                 sr.color = Color.black;
                 BlackTimer -= Time.deltaTime;
-                scoreText.text = "Score: " + player.Score;
+                //scoreText.text = "Score: " + player.Score;
                 timerText.text = "" + (int)BlackTimer;
                 
                 if (BlackTimer <= 1)
