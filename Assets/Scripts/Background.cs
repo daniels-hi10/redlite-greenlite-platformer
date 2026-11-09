@@ -32,9 +32,9 @@ public class Background : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         sr = GetComponent<SpriteRenderer>();
         
-        GreenTimer = 3f;
-        RedTimer = 2f;
-        BlackTimer = 1f;
+        GreenTimer = 4f;
+        RedTimer = 3f;
+        BlackTimer = 2f;
         
         scoreText.text = "Score: " + player.Score;
         lifeText.text = "Life: " + player.Life;
@@ -54,11 +54,14 @@ public class Background : MonoBehaviour
             {
                 sr.color = new Color(0.41f, 0.67f, 0.4f, 1f);
                 GreenTimer -= Time.deltaTime;
+                lifeText.text = "Life: " + player.Life;
+                scoreText.text = "Score: " + player.Score;
+                timerText.text = "" + (int)GreenTimer;
                 
-                if (GreenTimer <= 0)
+                if (GreenTimer <= 1)
                 {
                     Colors = Lights.Red;
-                    GreenTimer = 3f;
+                    GreenTimer = 4f;
                 }
             }
                 break;
@@ -67,27 +70,30 @@ public class Background : MonoBehaviour
             {
                 sr.color = new Color(0.67f, 0.4f, 0.4f, 1f);
                 RedTimer -= Time.deltaTime;
+                timerText.text = "" + (int)RedTimer;
                 
                 if (player.CurrentState != States.Idle)
                 {
                     buzzer.Play();
                     Colors = Lights.Black;
-                    RedTimer = 2f;
+                    RedTimer = 3f;
                     
                     ChangeScore(-1);
                     lifeText.text = "Life: " + player.Life;
-                    Debug.Log("Score: " + player.Score);
+                    Debug.Log(player.Score);
+                    scoreText.text = "Score: " + player.Score;
                     // ScoreTracker();
                 }
                 
-                if (RedTimer <= 0)
+                if (RedTimer <= 1)
                 {
                     Colors = Lights.Green;
-                    RedTimer = 2f;
+                    RedTimer = 3f;
                     
                     ChangeScore(1);
                     lifeText.text = "Life: " + player.Life;
-                    Debug.Log("Score: " + player.Score);
+                    Debug.Log(player.Score);
+                    scoreText.text = "Score: " + player.Score;
                 }
                 
                 //Debug.Log(Colors);
@@ -98,13 +104,14 @@ public class Background : MonoBehaviour
             {
                 sr.color = Color.black;
                 BlackTimer -= Time.deltaTime;
-                Debug.Log("Score: " + player.Score);
+                scoreText.text = "Score: " + player.Score;
+                timerText.text = "" + (int)BlackTimer;
                 
-                if (BlackTimer <= 0)
+                if (BlackTimer <= 1)
                 {
                     Colors = Lights.Green;
                     player.transform.position = new Vector2(-7.03f, -2.95f);
-                    BlackTimer = 1f;
+                    BlackTimer = 2f;
                     player.DepleteHealth();
                 }
                 
