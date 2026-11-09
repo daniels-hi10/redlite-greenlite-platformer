@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     public AudioSource dash;
     public Animator anim;
     public ParticleSystem part;
+
+    public Background background;
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -191,6 +193,13 @@ public class Player : MonoBehaviour
         if (CollidedObject.CompareTag("Hazard")) // respawns if i hit a spike
         {
             transform.position = new Vector2(-7.03f, -2.95f);
+        }
+        
+        Coin coin = CollidedObject.GetComponent<Coin>(); // +1 point upon collecting
+        if (coin != null)
+        {
+            coin.GetBumped();
+            
         }
     }
 
