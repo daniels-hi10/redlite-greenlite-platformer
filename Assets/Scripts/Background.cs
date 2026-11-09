@@ -32,9 +32,9 @@ public class Background : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<Player>();
         sr = GetComponent<SpriteRenderer>();
         
-        GreenTimer = 4f;
-        RedTimer = 3f;
-        BlackTimer = 2f;
+        GreenTimer = 11f;
+        RedTimer = 6f;
+        BlackTimer = 4f;
         
         scoreText.text = "Score: " + player.Score;
         lifeText.text = "Life: " + player.Life;
@@ -60,7 +60,7 @@ public class Background : MonoBehaviour
                 if (GreenTimer <= 1)
                 {
                     Colors = Lights.Red;
-                    GreenTimer = 4f;
+                    GreenTimer = 11f;
                 }
             }
                 break;
@@ -75,27 +75,22 @@ public class Background : MonoBehaviour
                 {
                     buzzer.Play();
                     Colors = Lights.Black;
-                    RedTimer = 3f;
+                    RedTimer = 6f;
                     
-                    ChangeScore(-1);
+                    ChangeScore(-3);
                     lifeText.text = "Life: " + player.Life;
                     Debug.Log(player.Score);
                     scoreText.text = "Score: " + player.Score;
-                    // ScoreTracker();
                 }
                 
                 if (RedTimer <= 1)
                 {
                     Colors = Lights.Green;
-                    RedTimer = 3f;
+                    RedTimer = 6f;
                     
                     ChangeScore(1);
                     lifeText.text = "Life: " + player.Life;
-                    Debug.Log(player.Score);
-                    //scoreText.text = "Score: " + player.Score;
                 }
-                
-                //Debug.Log(Colors);
             }
                 break;
 
@@ -103,18 +98,15 @@ public class Background : MonoBehaviour
             {
                 sr.color = Color.black;
                 BlackTimer -= Time.deltaTime;
-                //scoreText.text = "Score: " + player.Score;
                 timerText.text = "" + (int)BlackTimer;
                 
                 if (BlackTimer <= 1)
                 {
                     Colors = Lights.Green;
                     player.transform.position = new Vector2(-7.03f, -2.95f);
-                    BlackTimer = 2f;
+                    BlackTimer = 4f;
                     player.DepleteHealth();
                 }
-                
-                // Debug.Log(Colors);
             }
                 break;
         }

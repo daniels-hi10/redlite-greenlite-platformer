@@ -97,7 +97,6 @@ public class Player : MonoBehaviour
             vel.y = JumpVel; // jump
             jump.Play();
             CurrentState = States.Jump;
-            // OnPlatform = false; // prevents doublejumping while midair
         }
 
         if (OnPlatform == false)
@@ -139,22 +138,18 @@ public class Player : MonoBehaviour
         {
             case States.Idle:
                 anim.SetBool("IsRunning", false); anim.SetBool("HasJumped", false);
-                // sr.color = Color.white;
                 break;
 
             case States.Walk:
                 anim.SetBool("IsRunning", true); anim.SetBool("HasJumped", false);
-                // sr.color = Color.green;
                 break;
 
             case States.Jump:
-                // sr.color = Color.orange;
                 anim.SetBool("HasJumped", true); anim.SetBool("IsRunning", false);
                 break;
             
             case States.Lunge:
                 part.Emit(1);
-                // sr.color = Color.cyan;
                 break;
         }
     }
@@ -170,9 +165,6 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
-
-        // Background.scoreText.text = "Score: " + Score;
     }
 
     public bool OnGround()
@@ -183,6 +175,7 @@ public class Player : MonoBehaviour
     // collision stuff
     private void OnCollisionEnter2D(Collision2D other)
     {
+        LayerMask l = LayerMask.GetMask("Default");
         GameObject CollidedObject = other.gameObject;
         if (!Platforms.Contains(CollidedObject))
         {
@@ -193,13 +186,7 @@ public class Player : MonoBehaviour
         if (CollidedObject.CompareTag("Hazard")) // respawns if i hit a spike
         {
             transform.position = new Vector2(-7.03f, -2.95f);
-        }
-        
-        Coin coin = CollidedObject.GetComponent<Coin>(); // +1 point upon collecting
-        if (coin != null)
-        {
-            coin.GetBumped();
-            
+            background.ChangeScore(-1);
         }
     }
 
