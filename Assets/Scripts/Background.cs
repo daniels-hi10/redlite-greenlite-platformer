@@ -36,7 +36,7 @@ public class Background : MonoBehaviour
         RedTimer = 6f;
         BlackTimer = 4f;
         
-        scoreText.text = "Score: " + player.Score;
+        scoreText.text = "Score: " + Player.Score;
         lifeText.text = "Life: " + player.Life;
     }
 
@@ -79,8 +79,8 @@ public class Background : MonoBehaviour
                     
                     ChangeScore(-3);
                     lifeText.text = "Life: " + player.Life;
-                    Debug.Log(player.Score);
-                    scoreText.text = "Score: " + player.Score;
+                    Debug.Log(Player.Score);
+                    scoreText.text = "Score: " + Player.Score;
                 }
                 
                 if (RedTimer <= 1)
@@ -115,7 +115,7 @@ public class Background : MonoBehaviour
     public void ChangeScore(int amt)
     {
         if (player == null) return;
-        player.Score += amt;
-        scoreText.text = "Score: " + player.Score;
+        Player.Score += amt;
+        scoreText.text = "Score: " + Player.Score;
     }
 }

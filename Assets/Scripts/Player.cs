@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.LowLevelPhysics2D;
 
 public enum States
 {
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb; // rigidbody for physics
     public SpriteRenderer sr; // sprite renderer for sprites
     public bool OnPlatform; // am i on the platform?
+    
 
     //character stats
     public float Speed; // character speed
@@ -27,11 +30,12 @@ public class Player : MonoBehaviour
     public float LungeRate; // lunge rate, speed multiplier when character runs
     public float Duration; // lunge duration
     public float Cooldown; // lunge cooldown
+    // public float JumpTime;
 
     // timers + score
     public float CooldownTimer;
     public float LungeTimer;
-    public int Score;
+    public static int Score;
 
     public AudioSource jump;
     public AudioSource dash;
@@ -57,7 +61,7 @@ public class Player : MonoBehaviour
         Cooldown = 0.6f;
         Score = 0;
         
-        OnPlatform = false;
+        //OnPlatform = false;
         FacingLeft = false;
     }
 
@@ -76,7 +80,8 @@ public class Player : MonoBehaviour
         CooldownTimer -= Time.deltaTime; // timer for cooldowns
         
         Vector2 vel = new Vector2(0, rb.linearVelocityY); // character velocity
-        
+
+        OnPlatform = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, LayerMask.GetMask("Platform")).collider != null;
         
         if (Keyboard.current.rightArrowKey.isPressed) // if right arrow key pressed
         {
@@ -91,18 +96,33 @@ public class Player : MonoBehaviour
             CurrentState = States.Walk; // change anim state
         }
 
-        
-        if (Keyboard.current.cKey.wasPressedThisFrame && OnGround()) // if space pressed + if im not midair
+        if (Keyboard.current.cKey.wasPressedThisFrame && OnGround())
+        // if (Keyboard.current.cKey.wasPressedThisFrame && (OnPlatform || JumpTime < 0.3f)) // if space pressed + if im not midair
         {
             vel.y = JumpVel; // jump
             jump.Play();
             CurrentState = States.Jump;
+            
+            /* if (OnPlatform)
+            {
+                jump.Play();
+                CurrentState = States.Jump; 
+            } */
         }
 
         if (OnPlatform == false)
+            CurrentState = States.Jump;
+
+        /* if (OnPlatform)
         {
-            CurrentState = States.Jump; // change anim state
+            JumpTime = 0;
         }
+        else
+        {
+            JumpTime += Time.deltaTime;
+            if (!Keyboard.current.cKey.isPressed)
+                JumpTime = 999;
+        } */
 
         
         if (Keyboard.current.xKey.wasPressedThisFrame && CooldownTimer <= 0) // if C key pressed + cooldown timer is 0
@@ -110,11 +130,11 @@ public class Player : MonoBehaviour
             // resets timer
             LungeTimer = Duration;
             CooldownTimer = Cooldown;
+            dash.Play();
         }
 
         if (LungeTimer > 0)
         {
-            dash.Play();
             // dash to the direction of where im facing
             if (Keyboard.current.rightArrowKey.isPressed)
             {
@@ -163,19 +183,24 @@ public class Player : MonoBehaviour
         
         if (Life <= 0)
         {
-            Destroy(gameObject);
+            SceneManager.LoadScene("GameOver");
         }
     }
 
     public bool OnGround()
     {
+        // LayerMask l = LayerMask.GetMask("Platform");
+        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, l.value);
+        //RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, l.value);
         return Platforms.Count > 0;
+        // OnPlatform = true;
+        // return hit.collider != null;
     }
 
     // collision stuff
     private void OnCollisionEnter2D(Collision2D other)
     {
-        LayerMask l = LayerMask.GetMask("Default");
+        
         GameObject CollidedObject = other.gameObject;
         if (!Platforms.Contains(CollidedObject))
         {
