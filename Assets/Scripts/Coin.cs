@@ -6,10 +6,15 @@ public class Coin : MonoBehaviour
     public List <Vector3> pos = new List<Vector3>();
     public Background background;
     public Player player;
+    
+    public AudioSource coin;
+    public Animator anim;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
+        anim = GetComponent<Animator>();
         Positions();
     }
 
@@ -50,6 +55,7 @@ public class Coin : MonoBehaviour
 
             transform.position = targetPos;
             background.ChangeScore(1);
+            coin.Play();
         }
     }
 }
