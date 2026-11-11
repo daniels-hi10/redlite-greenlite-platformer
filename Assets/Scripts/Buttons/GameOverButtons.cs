@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 
-public class RestartButton : MonoBehaviour
+public class GameOverButtons : MonoBehaviour
 {
     public TextMeshProUGUI ScoreText;
     

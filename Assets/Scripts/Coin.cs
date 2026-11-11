@@ -29,7 +29,9 @@ public class Coin : MonoBehaviour
         pos.Add(new Vector2(2.15f, 0.05f));
         pos.Add(new Vector2(5.7f, -2.6f));
         pos.Add(new Vector2(6.7f, -1.7f));
-
+        pos.Add(new Vector2(-1.75f, 0.65f));
+        pos.Add(new Vector2(-4.95f, 0.65f));
+        
         int start = Random.Range(0, pos.Count);
         Vector2 startPos = pos[start];
         transform.position = startPos;
@@ -41,21 +43,26 @@ public class Coin : MonoBehaviour
         GameObject CollidedObject = other.gameObject;
         if (CollidedObject.CompareTag("Player"))
         {
-            int i = Random.Range(0, pos.Count);
-            int j = Random.Range(0, pos.Count);
-            Vector2 targetPos = pos[i];
-            Vector2 LastPos = pos[j];
-
-            bool SamePos = LastPos == targetPos;
-
-            if (SamePos)
-            {
-                transform.position = targetPos;
-            }
-
-            transform.position = targetPos;
-            background.ChangeScore(1);
+            Teleport();
+            if (background.Colors != Lights.Black) background.ChangeScore(1);
             coin.Play();
         }
+    }
+
+    public void Teleport()
+    {
+        int i = Random.Range(0, pos.Count);
+        int j = Random.Range(0, pos.Count);
+        Vector2 targetPos = pos[i];
+        Vector2 LastPos = pos[j];
+
+        bool SamePos = LastPos == targetPos;
+
+        if (SamePos)
+        {
+            transform.position = targetPos;
+        }
+
+        transform.position = targetPos;
     }
 }

@@ -21,6 +21,7 @@ public class Background : MonoBehaviour
 
     public SpriteRenderer sr;
     public Player player;
+    public Coin coin;
 
     public AudioSource buzzer;
     
@@ -105,6 +106,7 @@ public class Background : MonoBehaviour
                     Colors = Lights.Green;
                     player.transform.position = new Vector2(-7.03f, -2.95f);
                     BlackTimer = 4f;
+                    coin.Teleport();
                     player.DepleteHealth();
                 }
             }
